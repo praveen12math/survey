@@ -70,7 +70,7 @@ import 'firebase/firestore'
 import "./App.css"
 import "react-toastify/dist/ReactToastify.css";
 
-import FirebaseConfig from './FirebaseConfig'
+import FirebaseConfig from './config/FirebaseConfig'
 import { ToastContainer,toast } from 'react-toastify'
 firebase.initializeApp(FirebaseConfig)
 

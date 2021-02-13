@@ -1,66 +1,3 @@
-// //setOtp(otp+=num[Math.floor(Math.random()*10)])
-// import React,{useState} from "react"
-// import emailjs from 'emailjs-com'
-
-// const App = () => {
-
-//   const [otp1, setOtp1] = useState(Math.floor(Math.random()*10))
-//   const [otp2, setOtp2] = useState(Math.floor(Math.random()*10))
-//   const [otp3, setOtp3] = useState(Math.floor(Math.random()*10))
-//   const [otp4, setOtp4] = useState(Math.floor(Math.random()*10))
-//   const [otp, setOtp] = useState(`${otp1}`+`${otp2}`+`${otp3}`+`${otp4}`)
-
-//   function sendEmail(e) {
-//     e.preventDefault();
-
-//     emailjs.sendForm('service_9ivc584', 'template_5ep281u', e.target, 'user_zlyzhGRkWJJwxQzMajWGQ')
-//       .then((result) => {
-//           console.log(result.text);
-//       }, (error) => {
-//           console.log(error.text);
-//       });
-//   }
-
-//   const generateOtp = () => {
-
-//    // var num = '0123456789'
-
-//     setOtp1(Math.floor(Math.random()*10))
-//     setOtp2(Math.floor(Math.random()*10))
-//     setOtp3(Math.floor(Math.random()*10))
-//     setOtp4(Math.floor(Math.random()*10))
-//     setOtp(`${otp1}`+`${otp2}`+`${otp3}`+`${otp4}`)
-    
-//     //  for(let i=0;i<4;i++){
-//     //   setOtp(Math.floor(Math.random()*10))  
-//     //   console.log(otp);
-//     //  }
-//   }
-
-//   return (
-//     <div>
-//      <h1>{otp}</h1><br/>{/*
-//     <h1>{otp2}</h1><br/>
-//     <h1>{otp3}</h1><br/>
-//     <h1>{otp4}</h1><br/>
-//     <h1>{otp}</h1><br/> */}
-//     <button onClick={generateOtp}>Generate Otp</button>
-//     <form className="contact-form" onSubmit={sendEmail}>
-//       <input type="hidden" name="contact_number" />
-//       <label>Name</label>
-//       <input type="text" name="user_name" />
-//       <label>Email</label>
-//       <input type="email" name="user_email" />
-//       <label>Message</label>
-//       <textarea name="message" />
-//       <input type="submit" value="Send" />
-//     </form>
-//     </div>
-//   )
-// }
-
-// export default App
-
 
 import React,{useState} from 'react'
 import firebase from 'firebase/app'
@@ -79,6 +16,7 @@ const App = () => {
   const [isEmailVerify, setIsEmailVerify] = useState(false)
   const [isUser, setIsUser] = useState()
   const [userEmail, setUserEmail] = useState()
+  const [userPic, setUserPic] = useState()
   const [isRedirect, setIsRedirect] = useState(false)
 
 
@@ -88,7 +26,8 @@ const App = () => {
   firebase.auth()
   .signInWithPopup(provider)
   .then((result) => {
-//    console.log(result.user.email);
+   console.log(result.user.photoURL);
+setUserPic(result.user.photoURL)
     setIsEmailVerify(result.user.emailVerified)
     setIsUser(result.user.displayName)
     setUserEmail(result.user.email)
@@ -104,7 +43,8 @@ function handleResponse(){
     email: userEmail,
     name: isUser,
     rollno: document.getElementById("rollno").value,
-    message: document.getElementById("message").value
+    message: document.getElementById("message").value,
+    intrest: document.getElementById("option").value
   })
   .then(function (res){
     return(
@@ -120,33 +60,45 @@ function handleResponse(){
 
   return(
     <div style={{marginTop:"100px"}}>
+    <img className="mx-auto d-block" src={userPic} alt="" style={{borderRadius:"60%"}}/>
+    {/* <img className="mx-auto d-block" src="https://lh3.googleusercontent.com/a-/AOh14GhV2T8H5UWZlJ-sgv4WY_Y3WpFcdJjiAvVqTu3u=s96-c" alt="" style={{borderRadius:"60%"}}/> */}
     <div className="row g-0">
     <ToastContainer position="top-right" />
     <div className="col-1"></div>
       <div className="col" >
       {isEmailVerify?
        <div className="form">
-       {toast("Authorization successful", {type: "success"})}
        <label>Name</label>
-         <input type="text" value={isUser} name="" id="name" className="form-control"/>
+         <input type="text" value={isUser} name="" id="name" className="form-control" onClick={toast("Authorization successful", {type: "success"})}/>
          <label>Email</label>
          <input type="email" name="" value={userEmail} id="email" className="form-control"/>
          <label>Roll No</label>
          <input type="text" name="rollno" id="rollno" className="form-control"/>
-         <label htmlFor="">Message</label>
+         <label htmlFor="">Intrested in</label>
+         <select className="form-select" name="" id="option">
+          <option value="Nothing">Nothing</option>
+           <option value="C Programming">C Programming</option>
+           <option value="Web Development">Web Development</option>
+         </select>
+         <label htmlFor="">Any Suggestion</label>
          <textarea className="form-control" id="message" rows="3"/><br/>
          <button onClick={handleResponse} className="btn btn-warning form-control">Submit</button>
 
        </div>
        :
        <>
-       <div className="card bg-info" onClick={handleVerify}>
-        <div className="card-head text-center"><h1>Authenticate with Google</h1></div>
-        <div className="card-body text-center">
-          <img src="googleLogo.png" alt="" style={{width:"30%"}}/>
+
+       <div className="row">
+       <div className="col-lg-6">
+         <img src="fingerprint.gif" alt="" style={{width:"100%"}}/>
+       </div>
+       <div className="col-lg-4" style={{marginTop:"118px"}}>
+        <div>
+          <img src="googleLogo.png" alt="" style={{width:"30%", display:"block",marginLeft:"auto",marginRight:"auto"}} onClick={handleVerify}/>
+        </div>
+        <h3 className="text-center">Authenticate with Google</h3>
         </div>
         </div>
-        <h5 className="text-center">You are not authenticated, Please authenticate with Google</h5>
         </>
        }
       </div>

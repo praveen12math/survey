@@ -104,7 +104,7 @@ function handleResponse(){
       </div>
       <div className="col-1"></div>
     </div>
-    {isRedirect? window.location.href="http://localhost:3000" :""}
+    {isRedirect? window.location.href="https://survey1year.netlify.app/" :""}
     </div>
   )
 }

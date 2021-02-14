@@ -44,7 +44,9 @@ function handleResponse(){
     name: isUser,
     rollno: document.getElementById("rollno").value,
     message: document.getElementById("message").value,
-    intrest: document.getElementById("option").value
+    intrest: document.getElementById("option").value,
+    image: userPic,
+    timestamp: firebase.firestore.FieldValue.serverTimestamp()
   })
   .then(function (res){
     return(
@@ -59,7 +61,8 @@ function handleResponse(){
 }
 
   return(
-    <div style={{marginTop:"100px"}}>
+    <div>
+    <div style={{marginTop:"95px"}}>
     <img className="mx-auto d-block" src={userPic} alt="" style={{borderRadius:"60%"}}/>
     {/* <img className="mx-auto d-block" src="https://lh3.googleusercontent.com/a-/AOh14GhV2T8H5UWZlJ-sgv4WY_Y3WpFcdJjiAvVqTu3u=s96-c" alt="" style={{borderRadius:"60%"}}/> */}
     <div className="row g-0">
@@ -68,19 +71,19 @@ function handleResponse(){
       <div className="col" >
       {isEmailVerify?
        <div className="form">
-       <label>Name</label>
+       <label><b>Name</b></label>
          <input type="text" value={isUser} name="" id="name" className="form-control" onClick={toast("Authorization successful", {type: "success"})}/>
-         <label>Email</label>
+         <label><b>Email</b></label>
          <input type="email" name="" value={userEmail} id="email" className="form-control"/>
-         <label>Roll No</label>
-         <input type="text" name="rollno" id="rollno" className="form-control"/>
-         <label htmlFor="">Intrested in</label>
+         <label><b>Roll No</b></label>
+         <input type="text" name="rollno" id="rollno" className="form-control" required/>
+         <label><b>Intrested in </b></label>
          <select className="form-select" name="" id="option">
           <option value="Nothing">Nothing</option>
            <option value="C Programming">C Programming</option>
            <option value="Web Development">Web Development</option>
          </select>
-         <label htmlFor="">Any Suggestion</label>
+         <label><b>Any Suggestion </b></label>
          <textarea className="form-control" id="message" rows="3"/><br/>
          <button onClick={handleResponse} className="btn btn-warning form-control">Submit</button>
 
@@ -94,9 +97,9 @@ function handleResponse(){
        </div>
        <div className="col-lg-4" style={{marginTop:"118px"}}>
         <div>
-          <img src="googleLogo.png" alt="" style={{width:"30%", display:"block",marginLeft:"auto",marginRight:"auto"}} onClick={handleVerify}/>
+          <img src="giphy.gif" alt="" style={{width:"50%", display:"block",marginLeft:"auto",marginRight:"auto",cursor:"pointer"}} onClick={handleVerify}/>
         </div>
-        <h3 className="text-center">Authenticate with Google</h3>
+        <h3 className="text-center" style={{cursor:"pointer"}} onClick={handleVerify}>Authenticate with Google</h3>
         </div>
         </div>
         </>
@@ -104,7 +107,9 @@ function handleResponse(){
       </div>
       <div className="col-1"></div>
     </div>
+    <div className="fixed-bottom" style={{textAlign:"center",fontSize:"150%"}}><a href="https://github.com/praveen12math" className="text-dark" style={{textDecoration:"auto"}}>  See on <i class="fab fa-github"></i></a></div>
     {isRedirect? window.location.href="https://survey1year.netlify.app/" :""}
+    </div>
     </div>
   )
 }

@@ -107,7 +107,9 @@ function handleResponse(){
       </div>
       <div className="col-1"></div>
     </div>
-    <div className="fixed-bottom" style={{textAlign:"center",fontSize:"150%"}}><a href="https://github.com/praveen12math" className="text-dark" style={{textDecoration:"auto"}}>  See on <i class="fab fa-github"></i></a></div>
+    <div className="fixed-bottom" style={{textAlign:"center",fontSize:"150%"}}><a href="https://github.com/praveen12math" className="text-dark" style={{textDecoration:"auto"}}>
+      See on <i class="fab fa-github">&nbsp;
+    </i></a> <a href="https://github.com/beingabhi007"><i class="fab fa-github text-dark"></i></a></div>
     {isRedirect? window.location.href="https://survey1year.netlify.app/" :""}
     </div>
     </div>

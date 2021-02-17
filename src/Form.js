@@ -1,6 +1,5 @@
 
 import React,{useState} from 'react'
-import {Link} from "react-router-dom"
 import firebase from 'firebase/app'
 
 import 'firebase/auth'
@@ -9,6 +8,7 @@ import "./App.css"
 import "react-toastify/dist/ReactToastify.css";
 
 import { ToastContainer,toast } from 'react-toastify'
+import Footer from './Footer'
 
 
 const App = () => {
@@ -44,6 +44,7 @@ function handleResponse(){
     rollno: document.getElementById("rollno").value,
     message: document.getElementById("message").value,
     intrest: document.getElementById("option").value,
+    branch: document.getElementById("optionBranch").value,
     image: userPic,
     timestamp: firebase.firestore.FieldValue.serverTimestamp()
   })
@@ -78,9 +79,16 @@ function handleResponse(){
          <input type="text" name="rollno" id="rollno" className="form-control" required/>
          <label><b>Intrested in </b></label>
          <select className="form-select" name="" id="option">
-          <option value="Nothing">Nothing</option>
+          <option value="">Select</option>
            <option value="C Programming">C Programming</option>
            <option value="Web Development">Web Development</option>
+           <option value="Nothing">Nothing</option>
+         </select>
+         <label><b>Branch</b></label>
+         <select className="form-select" name="" id="optionBranch">
+          <option value="">Select</option>
+           <option value="CSE">CSE</option>
+           <option value="IT">IT</option>
          </select>
          <label><b>Any Suggestion </b></label>
          <textarea className="form-control" id="message" rows="3"/><br/>
@@ -106,12 +114,10 @@ function handleResponse(){
       </div>
       <div className="col-1"></div>
     </div>
-    <div className="fixed-bottom" style={{textAlign:"center",fontSize:"200%"}}><a href="https://github.com/praveen12math" className="text-dark" style={{textDecoration:"auto"}}>
-    <i class="fab fa-github">&nbsp;&nbsp;
-    </i></a> <a href="https://github.com/beingabhi007"><i class="fab fa-github text-dark"></i></a></div>
+
     {isRedirect? window.location.href="https://survey1year.netlify.app/" :""}
     </div>
-    <span className="fixed-bottom" style={{textAlign:"end"}}><Link to="/admin" ><h5 style={{color:"black"}}>Admin</h5></Link></span>
+    <Footer/>
     </div>
     
   )

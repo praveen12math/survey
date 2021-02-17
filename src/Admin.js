@@ -1,8 +1,12 @@
-import React, { useContext,useState } from 'react';
+import React, { useContext,useState,useEffect } from 'react';
 import {AllDataContext} from "./context"
 
 import firebase from 'firebase/app'
+import 'firebase/firestore'
 import 'firebase/auth'
+import "react-toastify/dist/ReactToastify.css";
+
+import { ToastContainer,toast } from 'react-toastify'
 
 
 const Admin = () => {
@@ -11,6 +15,9 @@ const Admin = () => {
     const [adminEmail] = useState("praveen12math@gmail.com")
     const [adminEmail2] = useState("abhisahu12345@gmail.com")
     const [userEmail, setUserEmail] = useState()
+    const [userDocId, setUserDocId] = useState()
+    const [cseCount, setCseCount] = useState(0)
+    const [itCount, setItCount] = useState(0)
 
     function handleVerify() {
         const provider = new firebase.auth.GoogleAuthProvider()
@@ -23,26 +30,76 @@ const Admin = () => {
         }).catch((error) => {
           console.log(error);
         });
+
       }
 
-      console.log(getData.docs[0].data().timestamp);
+      useEffect(() => {
+        function countResponse() {
+            firebase.firestore()
+            .collection("surveyResponse").where("branch", "==", "CSE")
+            .get()
+            .then((data)=>{
+                setCseCount(data.size)
+            })
+
+
+            firebase.firestore()
+            .collection("surveyResponse").where("branch", "==", "IT")
+            .get()
+            .then((data)=>{
+                setItCount(data.size)
+            })
+
+
+          }
+
+          countResponse()
+
+      },[])
+
+      console.log(userDocId);
+      
+
+        function deleteDoc(docID){
+            setUserDocId(docID)
+            firebase.firestore()
+            .collection("surveyResponse")
+            .doc(userDocId)
+            .delete()
+            .then(()=> {
+                toast("delete document successfull",{type:"success"})
+            })
+            .catch((err)=> {
+              toast(err.message,{type:"error"})
+            })
+        }
+
+     // console.log(getData.docs[0].id);
 
       if(adminEmail === userEmail || adminEmail2 === userEmail){
           return(
               <div className="bg-warning">
-                    <h1 className="text-center">Total Count <span className="text-success">{getData.size}</span></h1>
+                  <ToastContainer position="top-right" />
+                    <h1 className="text-center">CSE Count <span className="text-success">{cseCount}</span></h1>
               {getData.docs.map((dataR)=> (
                     <div className="row">
                     <div className="col-1"></div>
                     <div className="col mx-auto">
+                    {dataR.data().branch === "CSE" ?
                   <div className="card mt-4 mb-2 border-5" style={{borderRadius:"20px"}}>
                   <div className="row">
                       <div className="col-10">
                       <div className="card-body">
+                      <i className="fas fa-trash text-danger"
+                      style={{cursor:"pointer"}}
+                      onClick={()=> deleteDoc(dataR.id)}
+                      >                          
+                      </i>
                              <h5 className="card-text">{dataR.data().name}</h5>
                             <h5 className="card-text">{dataR.data().email}</h5>
                             <h5 className="card-text">{dataR.data().rollno}</h5>
                             <h5 className="card-text">{dataR.data().intrest}</h5>
+                            <h5 className="card-text">{dataR.data().branch}</h5>
                             {/* <h5 className="card-text">{dataR.data().timestamp.nanosecond}</h5> */}
                             <p className="card-text">{dataR.data().message}</p>
                         </div>
@@ -52,14 +109,55 @@ const Admin = () => {
                         style={{width:"100%",borderRadius:"60%",alignSelf:"flex-end"}}/>
                       </div>
                   </div>
-                      
-                        
                   </div>
+                  : "" }
+                      
                   </div>
                   <div className="col-1"></div>
                   </div>
               )
               )}
+
+              <h1 className="text-center mt-5">IT Count <span className="text-success">{itCount}</span></h1>
+              {getData.docs.map((dataR)=> (
+                    <div className="row">
+                    <div className="col-1"></div>
+                    <div className="col mx-auto">
+                    {dataR.data().branch === "IT" ?
+                  <div className="card mt-4 mb-2 border-5" style={{borderRadius:"20px"}}>
+                 
+                  <div className="row">
+                      <div className="col-10">
+                      <div className="card-body">
+                      <i className="fas fa-trash text-danger"
+                      style={{cursor:"pointer"}}
+                      onClick={()=> deleteDoc(dataR.id)}
+                      >                          
+                      </i>                   
+                             <h5 className="card-text">{dataR.data().name}</h5>
+                            <h5 className="card-text">{dataR.data().email}</h5>
+                            <h5 className="card-text">{dataR.data().rollno}</h5>
+                            <h5 className="card-text">{dataR.data().intrest}</h5>
+                            <h5 className="card-text">{dataR.data().branch}</h5>
+                            {/* <h5 className="card-text">{dataR.data().timestamp.nanosecond}</h5> */}
+                            <p className="card-text">{dataR.data().message}</p>
+                        </div>
+                      </div>
+                      <div className="col-lg-2">
+                      <img className="img-fluid" src={dataR.data().image} alt="" 
+                        style={{width:"100%",borderRadius:"60%",alignSelf:"flex-end"}}/>
+                      </div>
+                  </div>
+                  </div>
+                  : "" }
+                      
+                  </div>
+                  <div className="col-1"></div>
+                  </div>
+              )
+              )}
+
+
               </div>
           )
       }

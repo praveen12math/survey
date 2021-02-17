@@ -14,6 +14,7 @@ const Admin = () => {
     const [getData] = useState(context.getAllData)
     const [adminEmail] = useState("praveen12math@gmail.com")
     const [adminEmail2] = useState("abhisahu12345@gmail.com")
+    const [adminEmail3] = useState("harshitranjansrivastava08@gmail.com")
     const [userEmail, setUserEmail] = useState()
     const [userDocId, setUserDocId] = useState()
     const [cseCount, setCseCount] = useState(0)
@@ -76,7 +77,7 @@ const Admin = () => {
 
      // console.log(getData.docs[0].id);
 
-      if(adminEmail === userEmail || adminEmail2 === userEmail){
+      if(adminEmail === userEmail || adminEmail2 === userEmail || adminEmail3 === userEmail){
           return(
               <div className="bg-warning">
                   <ToastContainer position="top-right" />

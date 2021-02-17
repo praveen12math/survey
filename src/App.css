@@ -1,4 +1,7 @@
 body{
-    background-image: url("./img2.png");
+    
     background-repeat: no-repeat;
+}
+.row{
+    margin: 0;
 }

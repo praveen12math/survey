@@ -75,7 +75,22 @@ const Admin = () => {
             })
         }
 
-     // console.log(getData.docs[0].id);
+        function timeConverter(UNIX_timestamp){
+          var a = new Date(UNIX_timestamp * 1000);
+          var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+          var year = a.getFullYear();
+          var month = months[a.getMonth()];
+          var date = a.getDate();
+          var hour = a.getHours();
+          var min = a.getMinutes();
+          var sec = a.getSeconds();
+          var time = date + ' ' + month + ' ' + year + ' ' + hour + ':' + min + ':' + sec ;
+          return time;
+        }
+
+        console.log(timeConverter(1613721285));
+
+     // console.log(new Date(getData.docs[1].data().timestamp.seconds));
 
       if(adminEmail === userEmail || adminEmail2 === userEmail || adminEmail3 === userEmail){
           return(
@@ -96,6 +111,7 @@ const Admin = () => {
                       onClick={()=> deleteDoc(dataR.id)}
                       >                          
                       </i>
+
                              <h5 className="card-text">{dataR.data().name}</h5>
                             <h5 className="card-text">{dataR.data().email}</h5>
                             <h5 className="card-text">{dataR.data().rollno}</h5>
@@ -103,6 +119,7 @@ const Admin = () => {
                             <h5 className="card-text">{dataR.data().branch}</h5>
                             {/* <h5 className="card-text">{dataR.data().timestamp.nanosecond}</h5> */}
                             <p className="card-text">{dataR.data().message}</p>
+                            <p className="card-text">{timeConverter(dataR.data().timestamp.seconds)}</p>
                         </div>
                       </div>
                       <div className="col-lg-2">
@@ -142,6 +159,7 @@ const Admin = () => {
                             <h5 className="card-text">{dataR.data().branch}</h5>
                             {/* <h5 className="card-text">{dataR.data().timestamp.nanosecond}</h5> */}
                             <p className="card-text">{dataR.data().message}</p>
+                            <p className="card-text">{timeConverter(dataR.data().timestamp.seconds)}</p>
                         </div>
                       </div>
                       <div className="col-lg-2">
